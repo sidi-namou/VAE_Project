@@ -135,6 +135,8 @@
 uint8_t gImgBuf[0x200];
 
 volatile float BLEvalue=0;
+volatile float PowerValue = 0;
+volatile float energieValue = 0;
 volatile float BLEvalueC=0;
 
 //osaMutexId_t gExtMemMutex;
@@ -443,16 +445,16 @@ void main_task(uint32_t param)
     	puissanceIns = argument[0];
 
     	BLEvalueC =argument[3];
-    	BLEvalue = argument[1];
+    	BLEvalue = argument[2];
     	// Lire la puissance moyenne
 
     	puissanceMoy=argument[1];
-
+    	PowerValue = argument[1];
 
     	// Lire l'energie
 
-    	    	energie=argument[2];
-
+    	energie=argument[2];
+    	energieValue = energie;
     	// Clear l'ecran pour mis-à-jour
 
 
@@ -521,6 +523,14 @@ void main_task(uint32_t param)
 void getBLEValue(float *argument){
 	float rounded_down = floorf(BLEvalue * 100) / 100;   /* Result: 2 chiffres aprés la virgule */
 	*argument=rounded_down;
+}
+void getPowerValue(float *argument){
+	float rounded_down = floorf(PowerValue * 100) / 100;   /* Result: 2 chiffres aprés la virgule */
+		*argument=rounded_down;
+}
+void getEnergyValue(float *argument){
+	float rounded_down = floorf(energieValue * 100) / 100;   /* Result: 2 chiffres aprés la virgule */
+			*argument=rounded_down;
 }
 void getBLEValueC(float * argument){
 	float rounded_down = floorf(BLEvalueC * 100) / 100;   /* Result: 2 chiffres aprés la virgule */

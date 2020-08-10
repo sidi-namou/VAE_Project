@@ -588,14 +588,13 @@ static void BleApp_NotifyRpkSm(void *param)
     switch (gRpkNotifyState)
     {
         case gNotifyTemperature_c:
+        	// Speed
         	if (get_CurrentValue(TemperatureValue + 1, &TempSize) == 0)
             {
-        		/* Expected 5 bytes: (flag | data0 | data1| data2 | number of decimals);
-				 * Ex: 0|1234|-2 => Celsius | 12,34 | 2 decimals */
-        		BleDecodeAllValue(TemperatureValue + 1, TempSizeBle - 1);
-        		/* Set 2 decimals */
-        		//TemperatureValue[4] = 0xFE;
 
+        		BleDecodeAllValue(TemperatureValue + 1, TempSizeBle - 1);
+
+        		// Send speed
                 BleApp_Notify(hValueTempMeasurement, TemperatureValue, TempSizeBle);
             }
             else
@@ -605,11 +604,12 @@ static void BleApp_NotifyRpkSm(void *param)
             break;
 
         case gNotifyHumidity_c:
-        	if (get_Value(HumidityValue+1, &HumiditySize) == 0)
+        	// Energy
+        	if (get_Energy(HumidityValue+1, &HumiditySize) == 0)
             {
-        		/* Expected 2 bytes: (data0 | data1);
-				 * Ex: 1234 => 12,34% */
+
         		BleDecodeAllValue(HumidityValue+1, HumiditySizeBle-1);
+        		// Send Energy
                 BleApp_Notify(hValueHumidity, HumidityValue, HumiditySizeBle);
             }
             else
@@ -618,14 +618,12 @@ static void BleApp_NotifyRpkSm(void *param)
             gRpkNotifyState = gNotifyPressure_c;
             break;
         case gNotifyPressure_c:
+        	// Distance
         	if (get_CurrentValue(PressureValue+1, &PressSize) == 0)
         	            {
-        	        		/* Expected 5 bytes: (flag | data0 | data1| data2 | number of decimals);
-        					 * Ex: 0|1234|-2 => Celsius | 12,34 | 2 decimals */
-        				BleDecodeAllValue(PressureValue+1, PressSizeBle-1);
-        	        		/* Set 2 decimals */
-        	        		//PressureValue[4] = 0xFE;
 
+        				BleDecodeAllValue(PressureValue+1, PressSizeBle-1);
+        				// Send Distance
         	                BleApp_Notify(hValuePressMeasurement, PressureValue, PressSizeBle);
         	            }
         	            else
@@ -634,18 +632,13 @@ static void BleApp_NotifyRpkSm(void *param)
         	            gRpkNotifyState = gNotifyAHRLL_c;
         	            break;
         case gNotifyAHRLL_c:
-        	if (get_CurrentValue(AHRLLValue + 1, &AHRLLSize) == 0)
+        	//Average Power
+        	if (get_Power(AHRLLValue + 1, &AHRLLSize) == 0)
         	{
-        		/* Expected 5 bytes: (flag | data0 | data1| data2 | number of decimals);
-        		 * Ex: 0|1234|-2 => Celsius | 12,34 | 2 decimals */
+
 
         		BleDecodeAllValue(AHRLLValue+1, AHRLLSizeBle - 1);
-        		/*AHRLLValue[0] = 0x31;
-        		AHRLLValue[1] = 0x32;
-        		AHRLLValue[2] = 0x2C;
-        		AHRLLValue[3] = 0x34;
-        		AHRLLValue[4] = 0x30;*/
-
+        		// Send Power
         		BleApp_Notify(hValueAHRLLMeasurement, AHRLLValue, AHRLLSizeBle);
         	}
         	else

@@ -390,6 +390,34 @@ uint8_t get_CurrentValue(uint8_t *buf, uint8_t *size){
 
 	    return 1;
 }
+uint8_t get_Power(uint8_t *buf, uint8_t *size){
+	if(buf != NULL && size != NULL && *size > 3)
+		    {
+
+		     	float voltageSens=0;
+		     	getPowerValue(&voltageSens);
+		            FLib_MemCpy(buf, &voltageSens, 4);
+		            *size = 4;
+
+		            return 0;
+		    }
+
+		    return 1;
+}
+uint8_t get_Energy(uint8_t *buf, uint8_t *size){
+	if(buf != NULL && size != NULL && *size > 3)
+			    {
+
+			     	float voltageSens=0;
+			     	getEnergyValue(&voltageSens);
+			            FLib_MemCpy(buf, &voltageSens, 4);
+			            *size = 4;
+
+			            return 0;
+			    }
+
+			    return 1;
+}
 uint8_t get_temperature(uint8_t *buf, uint8_t *size)
 {
     ens210_meas_data_t ens210_data;

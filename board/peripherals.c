@@ -771,7 +771,7 @@ void ADC_TASK(float * argument)
      	argument[0]=PuissanceIns;
      	argument[1]=PuissanceMoy;
      	argument[2]=voltageSens;
-     	argument[3]=Courant;
+     	argument[3]=energie;
 /*
        // Affichage à mettre dans une autre tache
      	// envoie de la puissance instantannée

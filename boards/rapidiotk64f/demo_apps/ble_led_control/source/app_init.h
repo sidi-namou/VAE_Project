@@ -112,6 +112,8 @@ Public global variables declarations
 
 QueueHandle_t xQueue1,QueuePuiM,QueueEne;
 void getBLEValue(float *argument);
+void getPowerValue(float *argument);
+void getEnergyValue(float *argument);
 extern taskMsgQueue_t appThreadMsgQueue;
 extern void (* pfAppKeyboardHandler)(void*);
 
