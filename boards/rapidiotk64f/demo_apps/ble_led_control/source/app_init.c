@@ -435,7 +435,7 @@ void main_task(uint32_t param)
     /* Main Application Loop (idle state) */
     while (1)
     {
-    	//OSA_TimeDelay(1000);
+    	OSA_TimeDelay(2000);
 
 
     		// Actualiser les mesures
