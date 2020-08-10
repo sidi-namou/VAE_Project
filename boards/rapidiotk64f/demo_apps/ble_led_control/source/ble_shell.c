@@ -589,7 +589,7 @@ static void BleApp_NotifyRpkSm(void *param)
     {
         case gNotifyTemperature_c:
         	// Speed
-        	if (get_CurrentValue(TemperatureValue + 1, &TempSize) == 0)
+        	if (get_Speed(TemperatureValue + 1, &TempSize) == 0)
             {
 
         		BleDecodeAllValue(TemperatureValue + 1, TempSizeBle - 1);
@@ -619,7 +619,7 @@ static void BleApp_NotifyRpkSm(void *param)
             break;
         case gNotifyPressure_c:
         	// Distance
-        	if (get_CurrentValue(PressureValue+1, &PressSize) == 0)
+        	if (get_Distance(PressureValue+1, &PressSize) == 0)
         	            {
 
         				BleDecodeAllValue(PressureValue+1, PressSizeBle-1);

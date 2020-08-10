@@ -360,12 +360,13 @@ uint8_t get_pressure(uint8_t *buf, uint8_t *size)
 
     return 1;
 }
-uint8_t get_PowerValue(uint8_t *buf,uint8_t *size){
+
+uint8_t get_Speed(uint8_t *buf,uint8_t *size){
 	if(buf != NULL && size != NULL && *size > 3)
 		    {
 
 		     	float voltageSens=354.43;
-		     //	getBLEValue(&voltageSens);
+		     	getSpeed(&voltageSens);
 
 		            FLib_MemCpy(buf, &voltageSens, 4);
 		            *size = 4;
@@ -375,13 +376,13 @@ uint8_t get_PowerValue(uint8_t *buf,uint8_t *size){
 
 		    return 1;
 }
-uint8_t get_CurrentValue(uint8_t *buf, uint8_t *size){
+uint8_t get_Distance(uint8_t *buf, uint8_t *size){
 
 	if(buf != NULL && size != NULL && *size > 3)
 	    {
 
 	     	float voltageSens=345.33;
-	     	//getBLEValue(&voltageSens);
+	     	getDistanceValue(&voltageSens);
 	            FLib_MemCpy(buf, &voltageSens, 4);
 	            *size = 4;
 
