@@ -45,6 +45,8 @@ Include Files
 #include "LED.h"
 #include "board.h"
 #include "queue.h"
+#include "rtc_driver.h"
+
 /*==================================================================================================
 Public macros
 ==================================================================================================*/
@@ -111,6 +113,7 @@ Public global variables declarations
 ==================================================================================================*/
 
 QueueHandle_t xQueue1,QueuePuiM,QueueEne;
+void DisplayTimeStamp(settingsPCF_t new_timestamp);
 void getDistanceValue(float *argument);
 void getSpeed(float * argument);
 void getPowerValue(float *argument);

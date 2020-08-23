@@ -72,6 +72,7 @@
 #include "debug_log.h"
 #include "sensors.h"
 
+
 #if THREAD_USE_THCI
     #include "thci.h"
     #include "FsciInterface.h"
@@ -365,6 +366,8 @@ void main_task(uint32_t param)
 	char s[12];
 	float puissanceIns,energie,puissanceMoy;
     static uint8_t mainInitialized = FALSE;
+    settingsPCF_t current_datatime;
+
 
     if (!mainInitialized)
     {
@@ -432,6 +435,9 @@ void main_task(uint32_t param)
 
     ADC16_1_init();
 
+    /*Init RTC*/
+    RTC_DateTime_Init();
+
     /* Main Application Loop (idle state) */
     while (1)
     {
@@ -496,6 +502,12 @@ void main_task(uint32_t param)
 
     	GUI_DispStringAt(mess,60,60);
 
+    	if (PCF2123_GetDateTime(&current_datatime) == PCF2123_SUCCESS)
+    	    	{
+    				/* Display the current time */
+    		DisplayTimeStamp(current_datatime);
+    	    	}
+
     	// On envoie les données au bluetooth
 
 
@@ -519,6 +531,16 @@ void main_task(uint32_t param)
             break;
         }*/
     }
+}
+void DisplayTimeStamp(settingsPCF_t new_timestamp)
+{
+	char new_timestamp_c[200];
+
+	/* Display the time tamp */
+	sprintf(new_timestamp_c,"Date: %02x / %02x / %02x;\nTime: %02x : %02x : %02x;\n\n", new_timestamp.days, new_timestamp.months, new_timestamp.years,
+			new_timestamp.hours, new_timestamp.minutes, new_timestamp.seconds);
+	GUI_DispStringAt(new_timestamp_c, 80,80);
+
 }
 void getDistanceValue(float *argument){
 

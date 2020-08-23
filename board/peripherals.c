@@ -727,26 +727,14 @@ void ADC_TASK(float * argument)
 	// ADC1->SC1 pin7 set to 1 when conversion is completed
 
     uint32_t CurrentSens;
-    uint32_t PreviousWakeTime;
+
   	float voltageSens;
   	float Courant;
   	float PuissanceIns;
   	float PuissanceMoy;
   	float energie;
-    //ADC16_DoAutoCalibration(ADC16_1_PERIPHERAL);
     
-     //ADC16_SetChannelConfig(ADC16_1_PERIPHERAL, ADC0_PTB6_GROUP, &adc16ChannelConfigStruct);
 
-    if (__get_IPSR())
-      {
-    	PreviousWakeTime = xTaskGetTickCountFromISR();
-      }
-      else
-      {
-    	  PreviousWakeTime = xTaskGetTickCount();
-      }
-
-    /*while(1){*/
 
     	  ADC16_SetChannelConfig(ADC16_1_PERIPHERAL, ADC0_PTB6_GROUP, &adc16ChannelConfigStruct);
 
@@ -772,23 +760,6 @@ void ADC_TASK(float * argument)
      	argument[1]=PuissanceMoy;
      	argument[2]=voltageSens;
      	argument[3]=energie;
-/*
-       // Affichage à mettre dans une autre tache
-     	// envoie de la puissance instantannée
-     	xQueueSend(xQueue1,&PuissanceIns,portMAX_DELAY);
-
-     	// Envoie de la puissance moyennne
-
-     	xQueueSend(QueuePuiM,&PuissanceMoy,portMAX_DELAY);
-
-     	// Envoie de l'energie
-
-     	xQueueSend(QueueEne,&energie,portMAX_DELAY);
-
-
-        vTaskDelayUntil(&PreviousWakeTime,(400/ portTICK_PERIOD_MS));
-        */
-    //}
 
 
 
@@ -822,7 +793,7 @@ float EnergieConsom(float newPower){
 	float energie =0;
 	uint32_t compteur=0;
 
-	energie+=newPower*compteur*0.3;
+	energie+=newPower*compteur*0.3;// La période de calcul du courant est 300ms
 	compteur++;
 	return energie;
 }
