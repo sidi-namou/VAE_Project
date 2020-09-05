@@ -69,13 +69,13 @@ uint8_t RTC_DateTime_Init(void)
 	settingsPCF_t PCFsettings;
 	PCFsettings.mode12_24 = PCF2123_MODE_24HOURS;	// to be completed
 	PCFsettings.Softreset = true;					// Force Software reset => Date and time need to be set
-	PCFsettings.hours = 0x12;						// 12H = 12AM
-	PCFsettings.minutes = 0x00;						// 0min
+	PCFsettings.hours = 0x10;						// 12H = 12AM
+	PCFsettings.minutes = 0x24;						// 0min
 	PCFsettings.seconds = 0x00;						// 0s
-	PCFsettings.weekdays = Thursday;
-	PCFsettings.days = 0x12;
+	PCFsettings.weekdays = Saturday;
+	PCFsettings.days = 0x05;
 	PCFsettings.months = September;
-	PCFsettings.years = 0x18;						// 2018
+	PCFsettings.years = 0x20;						// 2018
 	PCFsettings.clockOutputFreq = clkoutFreq_32768;	// Set Clock output frequency to 32768Hz
 	PCFsettings.MinInterrupt = false;				// Disable minute interrupt
 	PCFsettings.SecInterrupt = true;				// Enable second interrupt

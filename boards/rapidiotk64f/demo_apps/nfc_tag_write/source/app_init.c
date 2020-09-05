@@ -369,7 +369,7 @@ void AddTimeStamp(settingsPCF_t new_timestamp)
 	/* Display the time tamp */
 	sprintf(new_timestamp_c,"Date: %02x / %02x / %02x;\nTime: %02x : %02x : %02x;\n\n", new_timestamp.days, new_timestamp.months, new_timestamp.years,
 			new_timestamp.hours, new_timestamp.minutes, new_timestamp.seconds);
-	GUI_DispStringAt(new_timestamp_c, 0, 100);
+	GUI_DispStringAt(new_timestamp_c, 0, 0);
 
 	timestamp_buf_end = (timestamp_buf_end + 1) % NFC_BUFFER_LEN;
 

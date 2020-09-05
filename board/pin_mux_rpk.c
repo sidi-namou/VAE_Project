@@ -88,11 +88,11 @@ void BOARD_Init_RPK(void)
 	// initialize it in reset for the bootloader
  	GPIO_PinInit(BOARD_INITPINS_KW41_RST_GPIO,   BOARD_INITPINS_KW41_RST_PIN, &rpk_gpio_output_low_config);
 #else
- 	GPIO_PinInit(BOARD_INITPINS_KW41_RST_GPIO,   BOARD_INITPINS_KW41_RST_PIN, &rpk_gpio_output_high_config);
+ 	//GPIO_PinInit(BOARD_INITPINS_KW41_RST_GPIO,   BOARD_INITPINS_KW41_RST_PIN, &rpk_gpio_output_high_config);
 #endif
 #endif
 
-	BOARD_InitSPIBusSharing();
+	//BOARD_InitSPIBusSharing();
 
 #ifdef CPU_MK64FN1M0VMD12
 	PORT_IRQ_EnablePortAIrq();

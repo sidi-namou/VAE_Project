@@ -433,8 +433,17 @@ void main_task(uint32_t param)
 
     BleApp_DemoRpk();
 
-    ADC16_1_init();
 
+    GUI_SetFont(&GUI_Font8x18);
+
+    PORT_IRQ_EnablePortAIrq();
+    PORT_IRQ_EnablePortBIrq();
+    PORT_IRQ_EnablePortCIrq();
+    PORT_IRQ_EnablePortDIrq();
+    PORT_IRQ_EnablePortEIrq();
+
+    GUI_Clear();
+    ADC16_1_init();
     /*Init RTC*/
     RTC_DateTime_Init();
 
@@ -470,7 +479,7 @@ void main_task(uint32_t param)
     	  vTaskDelay(2000/ portTICK_PERIOD_MS);
 
     	  // Affichage au bout de l'ecran
-    	  GUI_DispStringAt ("VAE Project",10,10);
+    	  GUI_DispStringAt ("VAE Project",0,0);
 
     	  // Formatage de la puissance instantannée
 
@@ -480,7 +489,7 @@ void main_task(uint32_t param)
     	     	       strcpy(mess,"Puissance Inst = ");
     	     	       strcat(mess,str);
 
-    	GUI_DispStringAt(mess,20,20);
+    	GUI_DispStringAt(mess,0,20);
 
   	  // Formatage de la puissance moyenne
 
@@ -490,7 +499,7 @@ void main_task(uint32_t param)
     	    	     	       strcpy(mess,"Puissance Moy = ");
     	    	     	       strcat(mess,str);
 
-    	    	GUI_DispStringAt(mess,40,40);
+    	    	GUI_DispStringAt(mess,0,40);
 
     	  	  // Formatage de l'energie
 
@@ -500,7 +509,7 @@ void main_task(uint32_t param)
     	strcpy(mess,"Energie = ");
     	strcat(mess,str);
 
-    	GUI_DispStringAt(mess,60,60);
+    	GUI_DispStringAt(mess,0,60);
 
     	if (PCF2123_GetDateTime(&current_datatime) == PCF2123_SUCCESS)
     	    	{
@@ -539,7 +548,7 @@ void DisplayTimeStamp(settingsPCF_t new_timestamp)
 	/* Display the time tamp */
 	sprintf(new_timestamp_c,"Date: %02x / %02x / %02x;\nTime: %02x : %02x : %02x;\n\n", new_timestamp.days, new_timestamp.months, new_timestamp.years,
 			new_timestamp.hours, new_timestamp.minutes, new_timestamp.seconds);
-	GUI_DispStringAt(new_timestamp_c, 80,80);
+	GUI_DispStringAt(new_timestamp_c, 0,80);
 
 }
 void getDistanceValue(float *argument){
