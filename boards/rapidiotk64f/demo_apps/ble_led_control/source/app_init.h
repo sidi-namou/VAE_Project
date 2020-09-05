@@ -113,11 +113,15 @@ Public global variables declarations
 ==================================================================================================*/
 
 QueueHandle_t xQueue1,QueuePuiM,QueueEne;
+SemaphoreHandle_t	cycleSem;
 void DisplayTimeStamp(settingsPCF_t new_timestamp);
 void getDistanceValue(float *argument);
 void getSpeed(float * argument);
 void getPowerValue(float *argument);
 void getEnergyValue(float *argument);
+float calculVitesse();
+float calculVitessMoyenne(float vitesse);
+float calculDistance(void);
 extern taskMsgQueue_t appThreadMsgQueue;
 extern void (* pfAppKeyboardHandler)(void*);
 

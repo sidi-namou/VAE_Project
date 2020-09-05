@@ -113,6 +113,9 @@ instance:
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 extern QueueHandle_t xQueue1,QueuePuiM,QueueEne;
+float energie =0;
+uint32_t compteur=0;
+float puissanceMoy=0;
 TaskHandle_t * ADCHandle;
 
 void ADC_TASK(float * argument);
@@ -774,13 +777,12 @@ float PuissanceInst(float newCurrent){
 
 float PuissanceMoye(float newPower){
 
-	float puissanceMoy=0;
-	uint32_t compteur=0;
+
+
 
 
 	puissanceMoy=(puissanceMoy*compteur+newPower)/(compteur +1);
 
-	compteur++;
 
 
 	return puissanceMoy;
@@ -790,8 +792,7 @@ float PuissanceMoye(float newPower){
 
 float EnergieConsom(float newPower){
 
-	float energie =0;
-	uint32_t compteur=0;
+
 
 	energie+=newPower*compteur*0.3;// La période de calcul du courant est 300ms
 	compteur++;

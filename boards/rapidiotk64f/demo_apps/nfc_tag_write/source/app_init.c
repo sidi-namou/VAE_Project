@@ -488,6 +488,7 @@ void main_task(uint32_t param)
 
     while(1)
 	{
+    	xSemaphoreTake(cycleSem, portMAX_DELAY );
     	/* Wait for a freefall */
     	GUI_DispStringHCenterAt("Throw me", 90, 75);
     	while (!freefall_detected())

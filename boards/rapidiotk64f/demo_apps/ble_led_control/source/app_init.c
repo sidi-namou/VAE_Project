@@ -139,7 +139,15 @@ volatile float DistanceValue=0;	// Distance
 volatile float PowerValue = 0;
 volatile float energieValue = 0;
 volatile float speed=0;
-
+static bool_t stat = FALSE;
+const uint32_t circonferenceRoue = 2;//dépend du vélo utilisé
+uint32_t count=0;
+float Vmoy,dist;
+float v;
+uint32_t currTime, timeStart;
+uint32_t start,tick_elepsed;
+uint32_t time_elepsed;
+#define kmConvert circonferenceRoue*3600
 //osaMutexId_t gExtMemMutex;
 
 extern void APP_Init(void);
@@ -367,6 +375,7 @@ void main_task(uint32_t param)
 	float puissanceIns,energie,puissanceMoy;
     static uint8_t mainInitialized = FALSE;
     settingsPCF_t current_datatime;
+    float vitesse, vitesseMoyenne,distance;
 
 
     if (!mainInitialized)
@@ -428,6 +437,7 @@ void main_task(uint32_t param)
     {
         panic(0,0,0,0);
     }
+    vSemaphoreCreateBinary(cycleSem);
 
     Init_Display();
 
@@ -450,17 +460,22 @@ void main_task(uint32_t param)
     /* Main Application Loop (idle state) */
     while (1)
     {
-    	OSA_TimeDelay(2000);
-
-
+    	//OSA_TimeDelay(2000);
+    	// attendre l'interruption
+    	xSemaphoreTake(cycleSem, portMAX_DELAY );
     		// Actualiser les mesures
     	ADC_TASK(argument);
 
     	// Lire la puissance instantannée
     	puissanceIns = argument[0];
 
-    	speed = argument[3]; // vitesse
-    	DistanceValue = argument[0];// Distance
+    	vitesse = calculVitesse(); // vitesse
+    	vitesseMoyenne = calculVitessMoyenne(vitesse);
+    	distance = calculDistance();
+
+    	//speed = vitesseMoyenne;
+    	speed = vitesse;
+    	DistanceValue = distance;// Distance
     	// Lire la puissance moyenne
 
     	puissanceMoy=argument[1];
@@ -511,13 +526,30 @@ void main_task(uint32_t param)
 
     	GUI_DispStringAt(mess,0,60);
 
+    	gcvt(vitesse, 6, str);
+    	strcpy(s, "km/h");
+    	strcat(str, s);
+    	strcpy(mess,"VitesseInst = ");
+    	strcat(mess,str);
+    	GUI_DispStringAt(mess,0,80);
+
+
+    	gcvt(distance, 6, str);
+    	strcpy(s, "km");
+    	strcat(str, s);
+    	strcpy(mess,"Distance = ");
+    	strcat(mess,str);
+    	GUI_DispStringAt(mess,0,100);
+
+
+
     	if (PCF2123_GetDateTime(&current_datatime) == PCF2123_SUCCESS)
     	    	{
     				/* Display the current time */
     		DisplayTimeStamp(current_datatime);
     	    	}
 
-    	// On envoie les données au bluetooth
+
 
 
 
@@ -541,6 +573,37 @@ void main_task(uint32_t param)
         }*/
     }
 }
+float calculVitesse()
+{
+
+
+       if(stat == FALSE)
+       {
+       	timeStart = TMR_PITGetTimestamp();
+       	stat=TRUE;
+       	return 0;
+       }
+       else
+       {
+       	currTime = TMR_PITGetTimestamp();
+       	time_elepsed = currTime-timeStart ;
+       	time_elepsed /= 1000;
+       	timeStart=currTime;
+       	return kmConvert/time_elepsed;
+       }
+}
+
+float calculVitessMoyenne(float vitesse){
+
+	Vmoy=(Vmoy*count+vitesse)/(count+1);
+	count++;
+return Vmoy;
+}
+float calculDistance(void){
+
+	dist += count*circonferenceRoue;
+	return dist/1000;
+}
 void DisplayTimeStamp(settingsPCF_t new_timestamp)
 {
 	char new_timestamp_c[200];
@@ -548,7 +611,7 @@ void DisplayTimeStamp(settingsPCF_t new_timestamp)
 	/* Display the time tamp */
 	sprintf(new_timestamp_c,"Date: %02x / %02x / %02x;\nTime: %02x : %02x : %02x;\n\n", new_timestamp.days, new_timestamp.months, new_timestamp.years,
 			new_timestamp.hours, new_timestamp.minutes, new_timestamp.seconds);
-	GUI_DispStringAt(new_timestamp_c, 0,80);
+	GUI_DispStringAt(new_timestamp_c, 0,120);
 
 }
 void getDistanceValue(float *argument){

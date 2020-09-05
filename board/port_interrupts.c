@@ -49,7 +49,7 @@
 #include "pin_mux.h"
 #include "pin_mux_rpk.h"
 #include "spi_bus_share.h"
-
+#include "app_init.h"
 /*!
  * @brief PORTA_IRQHandler IRQ handler for all PORT A interrupts, place necessary callbacks where needed
  *        User switch SW1       (hw label: USER_SW1)
@@ -59,7 +59,9 @@
  *        Charging state        (hw label: CHG_STATE)
  *
  * @note Callbacks should be non-blocking
+ *
  */
+
 void PORTA_IRQHandler(void)
 {
     uint32_t pin_nb;
@@ -101,6 +103,7 @@ void PORTA_IRQHandler(void)
 
 }
 
+extern SemaphoreHandle_t	cycleSem;
 /*!
  * @brief PORTB_IRQHandler IRQ handler for all PORT B interrupts, place necessary callbacks where needed
  *        External module 1 interrupt (hw label: MB1_INT)
@@ -112,6 +115,7 @@ void PORTA_IRQHandler(void)
 void PORTB_IRQHandler(void)
 {
     uint32_t pin_nb;
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
     pin_nb = PORT_GetPinsInterruptFlags(PORTB);
 
     if (pin_nb & (1 << BOARD_INITPINS_MB1_INT_GPIO_PIN))
@@ -123,6 +127,7 @@ void PORTB_IRQHandler(void)
     if (pin_nb & (1 << BOARD_INITPINS_MB2_INT_GPIO_PIN))
     {
         /* TODO: Trigger event */
+    	xSemaphoreGiveFromISR( cycleSem, &xHigherPriorityTaskWoken );
         GPIO_ClearPinsInterruptFlags(BOARD_INITPINS_MB2_INT_GPIO, 1U << BOARD_INITPINS_MB2_INT_GPIO_PIN);
     }
 

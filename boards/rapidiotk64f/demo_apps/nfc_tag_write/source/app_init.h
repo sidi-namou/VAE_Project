@@ -87,7 +87,7 @@ typedef enum appDeviceMode_tag{
     gDeviceMode_Application_c
 }appDeviceMode_t;
 
-
+SemaphoreHandle_t	cycleSem;
 #define APP_GetState(thrInst)           gAppDeviceState[thrInst]
 #define APP_SetState(thrInst, state)    gAppDeviceState[thrInst] = (state); 
 #define APP_GetMode(thrInst)            gAppDeviceMode[thrInst]
